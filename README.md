@@ -75,6 +75,7 @@ Gunakan salah satu kredensial berikut:
 | siti@ut.ac.id | siti123 | Siti Marlina | Puslaba |
 | doni@ut.ac.id | doni123 | Doni Setiawan | Fakultas |
 | admin@ut.ac.id | admin123 | Admin SITTA | Administrator |
+| dede@ut.ac.id | dede123 | Dede Yudha Nersanto | Administrator |
 
 ### 3. Navigasi Dashboard
 Setelah login berhasil, Anda akan diarahkan ke Dashboard yang menampilkan:
