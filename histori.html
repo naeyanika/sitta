@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITTA - Histori Transaksi</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-ut.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="page-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="assets/logo-ut.png" alt="Logo UT" class="logo-ut">
+                    <h1>Histori Transaksi Bahan Ajar</h1>
+                </div>
+                <button onclick="goBack()" class="btn-back">← Kembali ke Dashboard</button>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <div class="table-container">
+                <h3 style="margin-bottom: 20px; color: #667eea;">Riwayat Transaksi</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nomor DO</th>
+                            <th>Nama Penerima</th>
+                            <th>Tanggal Kirim</th>
+                            <th>Paket</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Ekspedisi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historiTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Tugas 1 - Pemograman Berbasis Web | <a href="https://github.com/naeyanika" target="_blank">Dede Yudha Nersanto</a> | 051406571</p>
+        </footer>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            loadHistoriTransaksi();
+        };
+
+        function loadHistoriTransaksi() {
+            const tableBody = document.getElementById('historiTableBody');
+            tableBody.innerHTML = '';
+            
+            let index = 1;
+            for (const nomorDO in dataTracking) {
+                const transaksi = dataTracking[nomorDO];
+                const row = document.createElement('tr');
+                
+                let statusClass = transaksi.status === 'Dikirim' ? 'status-delivered' : 'status-in-transit';
+                
+                row.innerHTML = `
+                    <td>${index}</td>
+                    <td>${transaksi.nomorDO}</td>
+                    <td>${transaksi.nama}</td>
+                    <td>${formatDate(transaksi.tanggalKirim)}</td>
+                    <td>${transaksi.paket}</td>
+                    <td>${transaksi.total}</td>
+                    <td><span class="status-badge ${statusClass}">${transaksi.status}</span></td>
+                    <td>${transaksi.ekspedisi}</td>
+                `;
+                
+                tableBody.appendChild(row);
+                index++;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('id-ID', options);
+        }
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

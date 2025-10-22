@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITTA - Informasi Stok Bahan Ajar</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-ut.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="page-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="assets/logo-ut.png" alt="Logo UT" class="logo-ut">
+                    <h1>Informasi Stok Bahan Ajar</h1>
+                </div>
+                <button onclick="goBack()" class="btn-back">← Kembali ke Dashboard</button>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <div class="action-section">
+                <button onclick="showAddForm()" class="btn-add">+ Tambah Bahan Ajar Baru</button>
+            </div>
+
+            <!-- Form Tambah Bahan Ajar -->
+            <div id="addForm" class="add-form" style="display: none;">
+                <h3>Tambah Bahan Ajar Baru</h3>
+                <form id="bahanAjarForm" onsubmit="return addBahanAjar(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kodeLokasi">Kode Lokasi</label>
+                            <input type="text" id="kodeLokasi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kodeBarang">Kode Barang</label>
+                            <input type="text" id="kodeBarang" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="namaBarang">Nama Barang</label>
+                            <input type="text" id="namaBarang" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenisBarang">Jenis Barang</label>
+                            <select id="jenisBarang" required>
+                                <option value="BMP">BMP</option>
+                                <option value="Modul">Modul</option>
+                                <option value="CD">CD</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edisi">Edisi</label>
+                            <input type="number" id="edisi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="stok">Stok</label>
+                            <input type="number" id="stok" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Simpan</button>
+                        <button type="button" onclick="hideAddForm()" class="btn-cancel">Batal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Table Bahan Ajar -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kode Lokasi</th>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Jenis</th>
+                            <th>Edisi</th>
+                            <th>Stok</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bahanAjarTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-card">
+                    <h4>Total Jenis Bahan Ajar</h4>
+                    <p class="summary-value" id="totalJenis">0</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Total Stok Keseluruhan</h4>
+                    <p class="summary-value" id="totalStok">0</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Tugas 1 - Pemograman Berbasis Web | <a href="https://github.com/naeyanika" target="_blank">Dede Yudha Nersanto</a> | 051406571</p>
+        </footer>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Load data bahan ajar
+            loadBahanAjar();
+        };
+
+        function loadBahanAjar() {
+            const tableBody = document.getElementById('bahanAjarTableBody');
+            tableBody.innerHTML = '';
+            
+            let totalStok = 0;
+            
+            dataBahanAjar.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                // Determine status based on stock
+                let status = '';
+                let statusClass = '';
+                if (item.stok > 300) {
+                    status = 'Stok Aman';
+                    statusClass = 'status-safe';
+                } else if (item.stok >= 100 && item.stok <= 300) {
+                    status = 'Stok Sedang';
+                    statusClass = 'status-medium';
+                } else {
+                    status = 'Stok Rendah';
+                    statusClass = 'status-low';
+                }
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.kodeLokasi}</td>
+                    <td>${item.kodeBarang}</td>
+                    <td>${item.namaBarang}</td>
+                    <td>${item.jenisBarang}</td>
+                    <td>${item.edisi}</td>
+                    <td>${item.stok}</td>
+                    <td><span class="status-badge ${statusClass}">${status}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+                totalStok += item.stok;
+            });
+            
+            // Update summary
+            document.getElementById('totalJenis').textContent = dataBahanAjar.length;
+            document.getElementById('totalStok').textContent = totalStok.toLocaleString('id-ID');
+        }
+
+        function showAddForm() {
+            document.getElementById('addForm').style.display = 'block';
+            document.getElementById('bahanAjarForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideAddForm() {
+            document.getElementById('addForm').style.display = 'none';
+            document.getElementById('bahanAjarForm').reset();
+        }
+
+        function addBahanAjar(event) {
+            event.preventDefault();
+            
+            const newItem = {
+                kodeLokasi: document.getElementById('kodeLokasi').value,
+                kodeBarang: document.getElementById('kodeBarang').value,
+                namaBarang: document.getElementById('namaBarang').value,
+                jenisBarang: document.getElementById('jenisBarang').value,
+                edisi: document.getElementById('edisi').value,
+                stok: parseInt(document.getElementById('stok').value),
+                cover: 'img/default.jpg'
+            };
+            
+            // Add to dataBahanAjar array
+            dataBahanAjar.push(newItem);
+            
+            // Reload table
+            loadBahanAjar();
+            
+            // Hide form and reset
+            hideAddForm();
+            
+            // Show success message
+            alert('Bahan ajar berhasil ditambahkan!');
+        }
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

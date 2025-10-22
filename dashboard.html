@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITTA - Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-ut.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="assets/logo-ut.png" alt="Logo UT" class="logo-ut">
+                    <h1>SITTA - Dashboard</h1>
+                </div>
+                <div class="user-info">
+                    <span id="userName">User</span>
+                    <button class="Btn" onclick="showLogoutConfirmation()">
+                        <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                        <div class="text">Logout</div>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="greeting-section">
+                <h2 id="greetingText">Selamat Datang!</h2>
+                <p id="currentTime"></p>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-card" onclick="navigateTo('stok.html')">
+                    <div class="menu-icon">📚</div>
+                    <h3>Informasi Bahan Ajar</h3>
+                    <p>Lihat dan kelola stok bahan ajar</p>
+                </div>
+
+                <div class="menu-card" onclick="navigateTo('tracking.html')">
+                    <div class="menu-icon">📦</div>
+                    <h3>Tracking Pengiriman</h3>
+                    <p>Lacak status pengiriman bahan ajar</p>
+                </div>
+
+                <div class="menu-card" onclick="showLaporanMenu()">
+                    <div class="menu-icon">📊</div>
+                    <h3>Laporan</h3>
+                    <p>Monitoring dan rekap bahan ajar</p>
+                </div>
+
+                <div class="menu-card" onclick="navigateTo('histori.html')">
+                    <div class="menu-icon">📋</div>
+                    <h3>Histori Transaksi</h3>
+                    <p>Riwayat transaksi bahan ajar</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Tugas 1 - Pemograman Berbasis Web | <a href="https://github.com/naeyanika" target="_blank">Dede Yudha Nersanto</a> | 051406571</p>
+        </footer>
+    </div>
+
+    <!-- Modal Laporan -->
+    <div id="laporanModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLaporanMenu()">&times;</span>
+            <h2>Menu Laporan</h2>
+            <div class="laporan-menu">
+                <div class="laporan-item" onclick="navigateTo('monitoring-progress.html')">
+                    <h3>📈 Monitoring Progress DO Bahan Ajar</h3>
+                    <p>Pantau progress delivery order</p>
+                </div>
+                <div class="laporan-item" onclick="navigateTo('rekap-bahan-ajar.html')">
+                    <h3>📑 Rekap Bahan Ajar</h3>
+                    <p>Rekapitulasi data bahan ajar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Logout Confirmation -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content confirmation-modal">
+            <div class="confirmation-icon">⚠️</div>
+            <h2>Konfirmasi Logout</h2>
+            <p>Apakah Anda yakin ingin keluar dari sistem?</p>
+            <div class="confirmation-buttons">
+                <button onclick="confirmLogout()" class="btn-confirm-yes">Ya, Logout</button>
+                <button onclick="closeLogoutConfirmation()" class="btn-confirm-no">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            document.getElementById('userName').textContent = user.nama;
+            
+            // Set greeting based on time
+            setGreeting();
+            updateTime();
+            setInterval(updateTime, 1000);
+        };
+
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = '';
+            
+            if (hour >= 5 && hour < 11) {
+                greeting = 'Selamat Pagi';
+            } else if (hour >= 11 && hour < 15) {
+                greeting = 'Selamat Siang';
+            } else if (hour >= 15 && hour < 18) {
+                greeting = 'Selamat Sore';
+            } else {
+                greeting = 'Selamat Malam';
+            }
+            
+            const user = JSON.parse(sessionStorage.getItem('currentUser'));
+            document.getElementById('greetingText').textContent = `${greeting}, ${user.nama}!`;
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', options);
+        }
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function showLaporanMenu() {
+            document.getElementById('laporanModal').style.display = 'block';
+        }
+
+        function closeLaporanMenu() {
+            document.getElementById('laporanModal').style.display = 'none';
+        }
+
+        function showLogoutConfirmation() {
+            document.getElementById('logoutModal').style.display = 'block';
+        }
+
+        function closeLogoutConfirmation() {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const laporanModal = document.getElementById('laporanModal');
+            const logoutModal = document.getElementById('logoutModal');
+            
+            if (event.target == laporanModal) {
+                laporanModal.style.display = 'none';
+            }
+            if (event.target == logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>

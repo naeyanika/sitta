@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITTA - Tracking Pengiriman</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-ut.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="page-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="assets/logo-ut.png" alt="Logo UT" class="logo-ut">
+                    <h1>Tracking Pengiriman</h1>
+                </div>
+                <button onclick="goBack()" class="btn-back">← Kembali ke Dashboard</button>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <div class="tracking-search">
+                <h2>Cari Nomor Delivery Order</h2>
+                <form id="trackingForm" onsubmit="return searchTracking(event)">
+                    <div class="search-box">
+                        <input type="text" id="nomorDO" placeholder="Masukkan nomor DO (contoh: 2023001234)" required>
+                        <button type="submit" class="btn-search">Lacak</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="trackingResult" class="tracking-result" style="display: none;">
+                <div class="result-header">
+                    <h3>Informasi Pengiriman</h3>
+                </div>
+                <div class="result-info">
+                    <div class="info-row">
+                        <span class="info-label">Nomor DO:</span>
+                        <span class="info-value" id="resultNomorDO"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nama Penerima:</span>
+                        <span class="info-value" id="resultNama"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value status-badge" id="resultStatus"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Ekspedisi:</span>
+                        <span class="info-value" id="resultEkspedisi"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tanggal Kirim:</span>
+                        <span class="info-value" id="resultTanggal"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Paket:</span>
+                        <span class="info-value" id="resultPaket"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Total:</span>
+                        <span class="info-value" id="resultTotal"></span>
+                    </div>
+                </div>
+
+                <div class="tracking-timeline">
+                    <h3>Riwayat Perjalanan</h3>
+                    <div id="timelineContainer" class="timeline"></div>
+                </div>
+            </div>
+
+            <div id="notFoundMessage" class="not-found" style="display: none;">
+                <p>❌ Nomor DO tidak ditemukan. Silakan periksa kembali nomor DO Anda.</p>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Tugas 1 - Pemograman Berbasis Web | <a href="https://github.com/naeyanika" target="_blank">Dede Yudha Nersanto</a> | 051406571</p>
+        </footer>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'index.html';
+            }
+        };
+
+        function searchTracking(event) {
+            event.preventDefault();
+            
+            const nomorDO = document.getElementById('nomorDO').value.trim();
+            const trackingData = dataTracking[nomorDO];
+            
+            // Hide both result and not found message first
+            document.getElementById('trackingResult').style.display = 'none';
+            document.getElementById('notFoundMessage').style.display = 'none';
+            
+            if (trackingData) {
+                // Display tracking result
+                document.getElementById('resultNomorDO').textContent = trackingData.nomorDO;
+                document.getElementById('resultNama').textContent = trackingData.nama;
+                document.getElementById('resultStatus').textContent = trackingData.status;
+                document.getElementById('resultEkspedisi').textContent = trackingData.ekspedisi;
+                document.getElementById('resultTanggal').textContent = formatDate(trackingData.tanggalKirim);
+                document.getElementById('resultPaket').textContent = trackingData.paket;
+                document.getElementById('resultTotal').textContent = trackingData.total;
+                
+                // Set status badge color
+                const statusBadge = document.getElementById('resultStatus');
+                if (trackingData.status === 'Dikirim') {
+                    statusBadge.className = 'info-value status-badge status-delivered';
+                } else {
+                    statusBadge.className = 'info-value status-badge status-in-transit';
+                }
+                
+                // Display timeline
+                displayTimeline(trackingData.perjalanan);
+                
+                document.getElementById('trackingResult').style.display = 'block';
+            } else {
+                document.getElementById('notFoundMessage').style.display = 'block';
+            }
+        }
+
+        function displayTimeline(perjalanan) {
+            const timelineContainer = document.getElementById('timelineContainer');
+            timelineContainer.innerHTML = '';
+            
+            perjalanan.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+                
+                timelineItem.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">${item.waktu}</div>
+                        <div class="timeline-desc">${item.keterangan}</div>
+                    </div>
+                `;
+                
+                timelineContainer.appendChild(timelineItem);
+            });
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('id-ID', options);
+        }
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

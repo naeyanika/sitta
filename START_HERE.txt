@@ -1,0 +1,134 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║         SITTA - SISTEM INFORMASI TRACKING & TRANSAKSI         ║
+║                     BAHAN AJAR UT                             ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📌 QUICK START GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 CARA MENJALANKAN:
+   1. Buka file: index.html
+   2. Login dengan: rina@ut.ac.id / rina123
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂 STRUKTUR FILE:
+   
+   sitta-praktik/
+   │
+   ├── 📄 index.html              → Halaman Login
+   ├── 📄 dashboard.html          → Dashboard Menu
+   ├── 📄 tracking.html           → Tracking Pengiriman  
+   ├── 📄 stok.html              → Informasi Stok (UTAMA!)
+   │
+   ├── 📁 css/
+   │   └── style.css             → Styling lengkap
+   │
+   ├── 📁 js/
+   │   ├── data.js               → Data dummy
+   │   └── script.js             → Functionality
+   │
+   └── 📁 assets/
+       └── img/                  → Gambar (opsional)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 FITUR UTAMA YANG HARUS DICOBA:
+
+   ✅ 1. LOGIN VALIDATION
+      - Coba login dengan email salah
+      - Harus muncul alert error
+   
+   ✅ 2. DASHBOARD GREETING  
+      - Greeting otomatis sesuai waktu
+      - Pagi/Siang/Sore/Malam
+   
+   ✅ 3. TRACKING PENGIRIMAN
+      - Masukkan DO: 2023001234
+      - Lihat timeline pengiriman
+   
+   ✅ 4. TAMBAH BAHAN AJAR (PALING PENTING!)
+      - Klik "Informasi Bahan Ajar"
+      - Klik "+ Tambah Bahan Ajar Baru"
+      - Isi form dan simpan
+      - Data muncul di tabel!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 AKUN LOGIN TERSEDIA:
+
+   Email                Password      Role
+   ─────────────────────────────────────────────────
+   rina@ut.ac.id        rina123       UPBJJ-UT
+   agus@ut.ac.id        agus123       UPBJJ-UT
+   siti@ut.ac.id        siti123       Puslaba
+   admin@ut.ac.id       admin123      Administrator
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 TEKNOLOGI:
+   
+   • HTML5        → Struktur halaman
+   • CSS3         → Design & styling responsif
+   • JavaScript   → Interaktivitas & DOM manipulation
+   • No Framework → Pure vanilla JS!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 DOKUMENTASI:
+
+   📖 README.md         → Dokumentasi lengkap
+   📖 PETUNJUK.md       → Petunjuk penggunaan
+   📖 CHECKLIST.md      → Checklist fitur
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ FITUR BONUS:
+
+   ✨ Responsive Design (Mobile/Tablet/Desktop)
+   ✨ Modal Pop-ups (Lupa Password, Daftar)
+   ✨ Timeline Visualization
+   ✨ Color-coded Status Badges
+   ✨ Session Management
+   ✨ Real-time Clock
+   ✨ Smooth Animations
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ REQUIREMENT CHECKLIST:
+
+   ✔ Halaman Login (index.html)
+      • Input email & password
+      • Validasi dengan alert
+      • Modal Lupa Password
+      • Modal Daftar
+   
+   ✔ Dashboard (dashboard.html)
+      • Greeting berdasarkan waktu
+      • Menu navigasi lengkap
+      • Menu Laporan dengan sub-menu
+   
+   ✔ Tracking (tracking.html)  
+      • Input nomor DO
+      • Tampilan detail & timeline
+   
+   ✔ Stok Bahan Ajar (stok.html)
+      • Data dinamis dari data.js
+      • Fitur tambah baris baru (DOM)
+      • Update otomatis
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎓 TUGAS PRAKTIK - PEMROGRAMAN BERBASIS WEB
+   Universitas Terbuka
+   Semester 4 - 2025
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ✅ SEMUA FITUR LENGKAP & SIAP DIGUNAKAN!
+   
+   Selamat mengerjakan! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
