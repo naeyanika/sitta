@@ -156,5 +156,5 @@ Universitas Terbuka - 2025
 
 ---
 
-Dibuat oleh: Sitta
+Dibuat oleh: Dede Yudha Nersanto
 Tanggal: Oktober 2025
